@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Allen Binu's Thattukada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    /* General */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #fff3e6;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 20px 0;
+      background: #ff7043;
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5em;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fffaf0;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* Labels and Inputs */
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    select, input[type="number"] {
+      padding: 10px 12px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: calc(100% - 24px);
+      font-size: 1em;
+    }
+
+    /* Buttons */
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      background: #ff7043;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1em;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #e65c38;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      background: #fff3e6;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    table th, table td {
+      border: 1px solid #ffd1b3;
+      padding: 12px;
+      text-align: center;
+    }
+
+    table th {
+      background-color: #ffab91;
+      color: white;
+    }
+
+    #grandTotal {
+      text-align: right;
+      margin-top: 15px;
+      font-size: 1.3em;
+      font-weight: 600;
+      color: #ff5722;
+    }
+
+    /* Payment section */
+    .payment-section {
+      margin-top: 25px;
+      padding: 20px;
+      background: #ffe0b2;
+      border-radius: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      select, input[type="number"] {
+        width: 100%;
+      }
+      table th, table td {
+        padding: 8px;
+      }
+    }
+
+    /* Food Item Cards (optional future) */
+    .menu-card {
+      display: inline-block;
+      width: 200px;
+      margin: 10px;
+      padding: 15px;
+      background: #fff3e6;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .menu-card:hover {
+      background: #ffd0b3;
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Allen Binu's Thattukada</h1>
+</header>
+
+<div class="container">
+  <label for="item">Select Item:</label>
+  <select id="item">
+    <option value="Maggi" data-price="25">Maggi- ₹25</option>
+    <option value="Maggi+ Egg" data-price="35">Maggi + Egg - ₹35</option>
+    <option value="Bread Omlete" data-price="25">Bread Omlete - ₹25</option>
+    <option value="Kattan Kaappi" data-price="10">Kattan Kaappi - ₹10</option>
+    <option value="Single Omlete" data-price="12">Single Omlete - ₹12</option>
+    <option value="Double Omlete" data-price="20">Double Omlete - ₹20</option>
+    <option value="Yippee" data-price="25">Yippee - ₹25</option>
+    <option value="Yippee + Egg" data-price="35">Yippee + Egg - ₹35</option>
+  </select>
+
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" value="1" min="1">
+
+  <button onclick="addItem()">➕ Add Item</button>
+
+  <h3>Order Cart</h3>
+  <table id="cartTable">
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Unit Price</th>
+      <th>Total</th>
+      <th>Action</th>
+    </tr>
+  </table>
+
+  <h3 id="grandTotal">Grand Total: ₹0</h3>
+
+  <div class="payment-section">
+    <h3>Payment Details</h3>
+    <label for="paymentMethod">Payment Method:</label>
+    <select id="paymentMethod" onchange="toggleOnlineAccount()">
+      <option value="Cash">Cash</option>
+      <option value="Online">Online</option>
+    </select>
+
+    <div id="onlineAccountDiv" style="display:none; margin-top: 10px;">
+      <label for="onlineAccount">Online Payment To:</label>
+      <select id="onlineAccount">
+        <option value="Dhia">Dhia</option>
+        <option value="Haritheerth">Haritheerth</option>
+        <option value="Amritha">Amritha</option>
+        <option value="Ryan">Ryan</option>
+        <option value="Parveen">Parveen</option>
+        <option value="Azeem">Azeem</option>
+        <option value="Devapriya">Devapriya</option>
+        <option value="Parvanendhu">Parvanendhu</option>
+      </select>
+    </div>
+  </div>
+
+  <button onclick="submitOrder()">✅ Submit Order</button>
+</div>
+
+<script>
+const sheetURL = "https://script.google.com/macros/s/AKfycbzvBbl7xayRXCDsyVMPiLOkPXQ8d8CPzXnFIyyTUQ7Zn9GVuer5QP9R4IWnhkCSop_K/exec";
+let cart = [];
+
+function addItem() {
+  const itemSelect = document.getElementById("item");
+  const qty = parseInt(document.getElementById("quantity").value);
+  const price = parseInt(itemSelect.selectedOptions[0].dataset.price);
+  const itemName = itemSelect.value;
+  const total = price * qty;
+
+  cart.push({ item: itemName, quantity: qty, unitPrice: price, total: total });
+  renderCart();
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  renderCart();
+}
+
+function renderCart() {
+  const table = document.getElementById("cartTable");
+  table.innerHTML = `
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Unit Price</th>
+      <th>Total</th>
+      <th>Action</th>
+    </tr>
+  `;
+  let grandTotal = 0;
+  cart.forEach((row, index) => {
+    grandTotal += row.total;
+    table.innerHTML += `
+      <tr>
+        <td>${row.item}</td>
+        <td>${row.quantity}</td>
+        <td>₹${row.unitPrice}</td>
+        <td>₹${row.total}</td>
+        <td><button onclick="removeItem(${index})">❌</button></td>
+      </tr>
+    `;
+  });
+  document.getElementById("grandTotal").textContent = "Grand Total: ₹" + grandTotal;
+}
+
+function toggleOnlineAccount() {
+  const method = document.getElementById("paymentMethod").value;
+  document.getElementById("onlineAccountDiv").style.display = (method === "Online") ? "block" : "none";
+}
+
+function submitOrder() {
+  if (cart.length === 0) {
+    alert("⚠️ Cart is empty!");
+    return;
+  }
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const onlineAccount = document.getElementById("onlineAccount").value;
+  fetch(sheetURL, {
+    method: "POST",
+    body: JSON.stringify({ 
+      items: cart,
+      payment: {
+        method: paymentMethod,
+        account: paymentMethod === "Online" ? onlineAccount : "Cash"
+      }
+    })
+  })
+  .then(res => res.text())
+  .then(res => {
+    alert("✅ Order submitted successfully!");
+    cart = [];
+    renderCart();
+  })
+  .catch(err => alert("❌ Failed: " + err));
+}
+</script>
+
+</body>
+</html>
